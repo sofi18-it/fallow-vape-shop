@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>{{ product.title|upper }}</h2>
+
+<p>
+    {{ product.description|truncatewords:5 }}
+</p>
+
+<p>
+    Дата: {{ date|date:"d.m.Y" }}
+</p>
+
+<h3>Пов'язані товари:</h3>
+
+{% for item in related_products %}
+    {% include 'includes/item_card.html' %}
+{% empty %}
+    <p>Нічого немає</p>
+{% endfor %}
+
+{% endblock %}
