@@ -2,18 +2,48 @@
 
 {% block content %}
 
+<h2>Категорії</h2>
+
+<div class="categories">
+
+    <a class="category-btn" href="/">Всі</a>
+
+    {% for category in categories %}
+
+        <a class="category-btn" href="/?category={{ category.id }}">
+            {{ category.name }}
+        </a>
+
+    {% empty %}
+
+        <p>Категорій немає</p>
+
+    {% endfor %}
+
+</div>
+
 <h2>Каталог товарів</h2>
+
+<div class="products-grid">
 
 {% for product in products %}
 
 <div class="card">
-    <h3>{{ product.title }}</h3>
 
-    <p>{{ product.description }}</p>
+    <h3>
+        <a href="{% url 'product_detail' product.pk %}">
+            {{ product.title }}
+        </a>
+    </h3>
+
+    <p>{{ product.description|truncatewords:10 }}</p>
 
     <p><b>Смак:</b> {{ product.flavor }}</p>
 
-    <p><b>Ціна:</b> {{ product.price }} грн</p>
+    <p><b>Категорія:</b> {{ product.category }}</p>
+
+    <p class="price">{{ product.price }} грн</p>
+
 </div>
 
 {% empty %}
@@ -21,5 +51,7 @@
 <p>Товарів поки немає</p>
 
 {% endfor %}
+
+</div>
 
 {% endblock %}
