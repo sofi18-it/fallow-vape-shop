@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Каталог товарів</h2>
+
+{% for product in products %}
+
+<div class="card">
+    <h3>{{ product.title }}</h3>
+
+    <p>{{ product.description }}</p>
+
+    <p><b>Смак:</b> {{ product.flavor }}</p>
+
+    <p><b>Ціна:</b> {{ product.price }} грн</p>
+</div>
+
+{% empty %}
+
+<p>Товарів поки немає</p>
+
+{% endfor %}
+
+{% endblock %}

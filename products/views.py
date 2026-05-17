@@ -1,24 +1,12 @@
 from django.shortcuts import render
-from datetime import datetime
+from .models import Product
 
 
-def product_detail(request, pk):
-    product = {
-        "id": pk,
-        "title": "Elf Bar BC5000",
-        "description": "Популярний одноразовий вейп з ягідним смаком та великою кількістю затяжок."
-    }
-
-    related_products = [
-        "HQD",
-        "Lost Mary",
-        "Vuse Go"
-    ]
+def product_list(request):
+    products = Product.objects.all()
 
     context = {
-        "product": product,
-        "related_products": related_products,
-        "date": datetime.now()
+        "products": products
     }
 
-    return render(request, "detail.html", context)
+    return render(request, "product_list.html", context)
