@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 
 from .models import Product, Category
 from .forms import ContactForm
@@ -49,5 +51,31 @@ def contact_view(request):
     return render(
         request,
         "contact.html",
+        {"form": form}
+    )
+@login_required
+def profile_view(request):
+
+    return render(
+        request,
+        "profile.html"
+    )
+def register_view(request):
+
+    if request.method == "POST":
+
+        form = UserCreationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect("/accounts/login/")
+
+    else:
+        form = UserCreationForm()
+
+    return render(
+        request,
+        "registration/register.html",
         {"form": form}
     )
