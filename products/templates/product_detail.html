@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card">
+
+    {% if product.image %}
+
+    <img
+        src="{{ product.image.url }}"
+        class="product-image"
+    >
+
+    {% endif %}
+
+    <h2>
+        {{ product.title }}
+    </h2>
+
+    <p>
+        {{ product.description }}
+    </p>
+
+    <p>
+        Смак:
+        {{ product.flavor }}
+    </p>
+
+    <p class="price">
+        {{ product.price }} грн
+    </p>
+
+</div>
+
+{% endblock %}

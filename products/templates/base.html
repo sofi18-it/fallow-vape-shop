@@ -3,57 +3,102 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <title>Fallow Vape Shop</title>
 
-    <link rel="stylesheet" href="{% static 'products/css/style.css' %}">
+    <meta charset="UTF-8">
+
+    <title>
+        Fallow Vape Shop
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'products/css/style.css' %}"
+    >
+
 </head>
+
 <body>
 
 <header>
+
     <div class="container">
 
-        <h1>Fallow Vape Shop</h1>
+        <h1>
+            Fallow Vape Shop
+        </h1>
 
         <nav class="navbar">
 
-            <a href="/">Головна</a>
+            <div class="nav-left">
 
-            <a href="/about/">Про нас</a>
-
-            <a href="/contact/">Контакти</a>
-
-            {% if user.is_authenticated %}
-
-                <a href="/profile/">
-                    Профіль
+                <a href="/">
+                    Головна
                 </a>
 
-                <form action="{% url 'logout' %}" method="post">
-
-                    {% csrf_token %}
-
-                    <button class="logout-btn" type="submit">
-                        Logout
-                    </button>
-
-                </form>
-
-            {% else %}
-
-                <a href="{% url 'login' %}">
-                    Login
+                <a href="/about/">
+                    Про нас
                 </a>
 
-                <a href="/register/">
-                    Register
+                <a href="/contact/">
+                    Контакти
                 </a>
 
-            {% endif %}
+            </div>
+
+            <div class="nav-right">
+
+                {% if user.is_authenticated %}
+
+                    <a href="/profile/">
+                        Профіль
+                    </a>
+
+                    <a href="/cart/">
+                        Кошик
+                    </a>
+
+                    {% if user.profile.role == "manager" %}
+
+                        <a href="/dashboard/">
+                            Dashboard
+                        </a>
+
+                    {% endif %}
+
+                    <form
+                        action="{% url 'logout' %}"
+                        method="post"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            class="logout-btn"
+                            type="submit"
+                        >
+                            Logout
+                        </button>
+
+                    </form>
+
+                {% else %}
+
+                    <a href="{% url 'login' %}">
+                        Login
+                    </a>
+
+                    <a href="/register/">
+                        Register
+                    </a>
+
+                {% endif %}
+
+            </div>
 
         </nav>
 
     </div>
+
 </header>
 
 <div class="container">

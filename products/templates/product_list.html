@@ -6,11 +6,16 @@
 
 <div class="categories">
 
-    <a class="category-btn" href="/">Всі</a>
+    <a class="category-btn" href="/">
+        Всі
+    </a>
 
     {% for category in categories %}
 
-        <a class="category-btn" href="/?category={{ category.id }}">
+        <a
+            class="category-btn"
+            href="/?category={{ category.id }}"
+        >
             {{ category.name }}
         </a>
 
@@ -30,25 +35,59 @@
 
 <div class="card">
 
+    {% if product.image %}
+
+    <img
+        src="{{ product.image.url }}"
+        class="product-image"
+    >
+
+    {% endif %}
+
     <h3>
+
         <a href="{% url 'product_detail' product.pk %}">
+
             {{ product.title }}
+
         </a>
+
     </h3>
 
-    <p>{{ product.description|truncatewords:10 }}</p>
+    <p>
+        {{ product.description|truncatewords:10 }}
+    </p>
 
-    <p><b>Смак:</b> {{ product.flavor }}</p>
+    <p>
+        <b>Смак:</b>
+        {{ product.flavor }}
+    </p>
 
-    <p><b>Категорія:</b> {{ product.category }}</p>
+    <p>
+        <b>Категорія:</b>
+        {{ product.category }}
+    </p>
 
-    <p class="price">{{ product.price }} грн</p>
+    <p class="price">
+
+        {{ product.price }} грн
+
+    </p>
+
+    <a
+        href="{% url 'add_to_cart' product.id %}"
+        class="cart-btn"
+    >
+        Додати в кошик
+    </a>
 
 </div>
 
 {% empty %}
 
-<p>Товарів поки немає</p>
+<p>
+    Товарів поки немає
+</p>
 
 {% endfor %}
 

@@ -26,4 +26,38 @@
 
 </div>
 
+<h2 style="margin-top: 60px;">
+    Замовлення
+</h2>
+
+<div class="products-grid">
+
+{% for order in orders %}
+
+<div class="card">
+
+    <h3>
+        {{ order.product.title }}
+    </h3>
+
+    <p>
+        Користувач:
+        {{ order.user.username }}
+    </p>
+
+    <p>
+        Дата:
+        {{ order.created_at }}
+    </p>
+
+</div>
+
+{% empty %}
+
+<p>Замовлень поки немає</p>
+
+{% endfor %}
+
+</div>
+
 {% endblock %}

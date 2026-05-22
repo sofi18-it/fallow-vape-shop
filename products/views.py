@@ -3,6 +3,8 @@ from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseForbidden
+from .models import Order
+
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -34,12 +36,16 @@ def product_list(request):
 
 
 def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
+
+    product = get_object_or_404(
+        Product,
+        pk=pk
+    )
 
     return render(
         request,
-        "product_detail.html",
-        {"product": product}
+        'product_detail.html',
+        {'product': product}
     )
 
 
@@ -98,10 +104,19 @@ def dashboard_view(request):
         owner=request.user
     )
 
+    orders = Order.objects.filter(
+        product__owner=request.user
+    )
+
+    context = {
+        "products": products,
+        "orders": orders
+    }
+
     return render(
         request,
         "dashboard.html",
-        {"products": products}
+        context
     )
 @api_view(['GET'])
 def products_api(request):
@@ -114,3 +129,65 @@ def products_api(request):
     )
 
     return Response(serializer.data)
+@login_required
+def cart_view(request):
+
+    orders = Order.objects.filter(
+        user=request.user
+    )
+
+    total = sum(
+        order.product.price
+        for order in orders
+    )
+
+    context = {
+        "orders": orders,
+        "total": total
+    }
+
+    return render(
+        request,
+        "cart.html",
+        context
+    )
+@login_required
+def add_to_cart(request, product_id):
+
+    product = get_object_or_404(
+        Product,
+        id=product_id
+    )
+
+    Order.objects.create(
+        user=request.user,
+        product=product
+    )
+
+    return redirect("cart")
+@login_required
+def remove_from_cart(request, order_id):
+
+    order = get_object_or_404(
+        Order,
+        id=order_id,
+        user=request.user
+    )
+
+    order.delete()
+
+    return redirect("cart")
+
+@login_required
+def checkout_view(request):
+
+    orders = Order.objects.filter(
+        user=request.user
+    )
+
+    orders.update(status="processing")
+
+    return render(
+        request,
+        "success.html"
+    )

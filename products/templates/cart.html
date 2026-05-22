@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Мій кошик</h2>
+
+<div class="products-grid">
+
+{% for order in orders %}
+
+<div class="card">
+
+    {% if order.product.image %}
+
+    <img
+        src="{{ order.product.image.url }}"
+        class="product-image"
+    >
+
+    {% endif %}
+
+    <h3>
+
+        {{ order.product.title }}
+
+    </h3>
+
+    <p>
+
+        {{ order.product.price }} грн
+
+    </p>
+
+    <p>
+
+        Статус:
+        {{ order.status }}
+
+    </p>
+    <a
+    href="{% url 'remove_from_cart' order.id %}"
+    class="remove-btn"
+>
+    Видалити
+</a>
+
+    <p>
+
+        {{ order.product.flavor }}
+
+    </p>
+
+</div>
+
+{% empty %}
+
+<p>
+    Кошик порожній
+</p>
+
+{% endfor %}
+
+</div>
+
+<h2 style="margin-top: 40px;">
+
+    Загальна сума:
+    {{ total }} грн
+
+</h2>
+<a
+    href="{% url 'checkout' %}"
+    class="checkout-btn"
+>
+    Оформити замовлення
+</a>
+
+{% endblock %}
