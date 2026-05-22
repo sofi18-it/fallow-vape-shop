@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponseForbidden
 
 from .models import Product, Category
 from .forms import ContactForm
@@ -78,4 +79,23 @@ def register_view(request):
         request,
         "registration/register.html",
         {"form": form}
+    )
+@login_required
+def dashboard_view(request):
+
+    profile = request.user.profile
+
+    if profile.role != "manager":
+        return HttpResponseForbidden(
+            "У вас немає доступу"
+        )
+
+    products = Product.objects.filter(
+        owner=request.user
+    )
+
+    return render(
+        request,
+        "dashboard.html",
+        {"products": products}
     )

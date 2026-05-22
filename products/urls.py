@@ -41,4 +41,9 @@ urlpatterns = [
         views.register_view,
         name='register'
     ),
+    path(
+    'dashboard/',
+    views.dashboard_view,
+    name='dashboard'
+    ),
 ]
