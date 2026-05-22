@@ -46,4 +46,9 @@ urlpatterns = [
     views.dashboard_view,
     name='dashboard'
     ),
+    path(
+    'api/products/',
+    views.products_api,
+    name='products_api'
+    ),
 ]

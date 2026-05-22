@@ -4,6 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseForbidden
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from .serializers import ProductSerializer
 from .models import Product, Category
 from .forms import ContactForm
 
@@ -99,3 +103,14 @@ def dashboard_view(request):
         "dashboard.html",
         {"products": products}
     )
+@api_view(['GET'])
+def products_api(request):
+
+    products = Product.objects.all()
+
+    serializer = ProductSerializer(
+        products,
+        many=True
+    )
+
+    return Response(serializer.data)
